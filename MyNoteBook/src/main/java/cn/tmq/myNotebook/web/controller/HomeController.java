@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import cn.tmq.myNotebook.constants.Constants;
 import cn.tmq.myNotebook.constants.Message;
@@ -55,11 +54,26 @@ public class HomeController extends BaseController{
 			model.addAttribute("list", message.getResult());
 			// 当前页码传入前台
 			model.addAttribute("page", pageIndex);
+			// 获取总页数
+			model.addAttribute("pageCount", this.calculatePages(Integer.parseInt(message.getAddition().toString())));
 			return this.validateResult(message, model, Constants.VIEW_HOME, Constants.VIEW_HOME, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return this.exceptionHandler(model);
 		}
+	}
+	
+	/**
+	 * 计算需要分多少页.
+	 * @param count 总数量
+	 * @return 页数
+	 */
+	private int calculatePages(int count) {
+		int pagination = 10;
+		if (count == 10) {
+			return 1;
+		}
+		return (count / pagination) + 1;
 	}
 	
 	/**

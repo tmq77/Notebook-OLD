@@ -24,7 +24,7 @@ public class CreateNoteService {
 	/**
 	 * 插入数据
 	 * @param mNotes
-	 * @return
+	 * @return 插入的数据数量
 	 */
 	public int insertBlog(MNotes mNote) {
 		return mapper.insertNote(mNote);
@@ -32,10 +32,19 @@ public class CreateNoteService {
 	
 	/**
 	 * 搜索对应用户的笔记
-	 * @param userId
-	 * @return
+	 * @param userId 用户id
+	 * @return 笔记列表
 	 */
 	public List<MNotes> selectAllNotesByUserId(int userId,int index) {
 		return this.mapper.selectAllNotesByUserId(userId, index);
+	}
+	
+	/**
+	 * 获取用户所有的笔记的数量
+	 * @param userId 用户id
+	 * @return 笔记数量
+	 */
+	public int selectNotesCountByUserId(int userId) {
+		return this.mapper.selectCountFromNotesByUserId(userId);
 	}
 }

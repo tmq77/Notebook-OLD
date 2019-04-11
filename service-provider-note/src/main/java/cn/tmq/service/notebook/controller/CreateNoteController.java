@@ -50,10 +50,13 @@ public class CreateNoteController {
 				resultMap.put("message", "页数不能为负");
 				return resultMap;
 			}
-			
+			int userId = Integer.parseInt(paramMap.get("id"));
 			// 检索对应用户的所有笔记，以每页10条数据显示
-			List<MNotes> resultList = this.service.selectAllNotesByUserId(Integer.parseInt(paramMap.get("id")), index);
+			List<MNotes> resultList = this.service.selectAllNotesByUserId(userId, index);
+			int count = this.service.selectNotesCountByUserId(userId);
+			
 			resultMap.put("status", "200");
+			resultMap.put("addition", String.valueOf(count));
 			resultMap.put("result", resultList);
 			return resultMap;
 		} catch (Exception e) {

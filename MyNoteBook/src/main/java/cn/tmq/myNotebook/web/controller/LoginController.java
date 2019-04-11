@@ -107,6 +107,8 @@ public class LoginController extends BaseController {
 					session.setAttribute(Constants.SESSION_USER, message.getResult());
 					resultMap.put("error", "0");
 					resultMap.put("message", "登录成功,请稍后");
+				} else if ("777".equals(message.getStatus())) {
+					throw new Exception();
 				} else {
 					resultMap.put("error", "1");
 					resultMap.put("message", "账号密码错误");

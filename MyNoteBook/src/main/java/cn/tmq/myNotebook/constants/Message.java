@@ -18,6 +18,12 @@ public class Message<T> implements Serializable{
 	 * 结果值
 	 */
 	private T result;
+	
+	/**
+	 * 附加值(用于存放一些说明性的值：例如结果值数组的size)
+	 */
+	private Object addition;
+	
 	/**
 	 * 信息
 	 */
@@ -25,7 +31,7 @@ public class Message<T> implements Serializable{
 	/**
 	 * 微服务端口
 	 */
-	private String who;
+	private String port;
 	/**
 	 * @return the status
 	 */
@@ -70,15 +76,27 @@ public class Message<T> implements Serializable{
 	 * 微服务端口
 	 * @return the who
 	 */
-	public String getWho() {
-		return who;
+	public String getPort() {
+		return port;
 	}
 	/**
 	 * 微服务端口
 	 * @param who the who to set
 	 */
-	public void setWho(String who) {
-		this.who = who;
+	public void setPort(String port) {
+		this.port = port;
+	}
+	/**
+	 * @return the addition
+	 */
+	public Object getAddition() {
+		return addition;
+	}
+	/**
+	 * @param addition the addition to set
+	 */
+	public void setAddition(Object addition) {
+		this.addition = addition;
 	}
 	
 }

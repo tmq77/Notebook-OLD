@@ -4,9 +4,39 @@
 $(() => {
 	// 富文本编辑器变量
 	let textEditor;
+	// 分页控件生成 pageCount : 总页数
+	let pagination = (pageCount) => {
+		let cur = parseInt($("#page-index").val());
+		let pre = cur - 1;
+		let next = cur + 1;
+		// 上一页
+		let preHref = "/notes?page=" + pre;
+		// 下一页
+		let nextHref = "/notes?page=" + next;
+		
+		if (pre <= 0) {
+			// 已经是第一页,上一页按钮的href指向#
+			preHref = "#";
+		}
+		
+		if (next >= pageCount) {
+			// 已经是最后一页，下一页按钮的href指向#
+			nextHref = "#";
+		}
+		
+		let li = '<li><a th:href="' + preHref + '">&laquo;上一页</a></li>';
+		for (let i = 1; i <= pageCount; i++) {
+			li += "<li><a href='/notes?page=" + i +"'>" + i + "</a></li>";
+		}
+		li += '<li><a href="' + nextHref + '">下一页&raquo;</a></li>';
+		$(".pagination").append(li);
+	};
 	
 	if ($(".note-list").length >= 10) {
 		$(".footer").show();
+		// 根据页数拼接页数按钮
+		let count = parseInt($("#page-count").text());
+		pagination(count);
 	}
 	
 	// 导航条点击事件:添加背景色

@@ -15,4 +15,7 @@ public interface MNotesCustomMapper {
 	
 	@Select("select id, title from m_notes where user_id = #{userId} limit #{index}, 10")
 	List<MNotes> selectAllNotesByUserId(@Param("userId") int userId, @Param("index") int index);
+	
+	@Select("select count(1) from m_notes where user_id = #{userId}")
+	int selectCountFromNotesByUserId(@Param("userId") int userId);
 }
