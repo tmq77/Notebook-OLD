@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+  <context id="context1">
+  <!-- ?nullCatalogMeansCurrent=true为了解决不生成select和insert的问题 -->
+    <jdbcConnection connectionURL="jdbc:mysql://192.168.3.39:3306/my_notebook?nullCatalogMeansCurrent=true" 
+    driverClass="com.mysql.cj.jdbc.Driver" 
+    password="LYH66666" 
+    userId="myblog" />
+    <javaModelGenerator targetPackage="cn.tmq.service.notebook.entity" 
+    	targetProject="service-provider-note/src/main/java" />
+    <sqlMapGenerator targetPackage="cn.tmq.service.notebook.mapper" targetProject="service-provider-note/src/main/resources" />
+    <javaClientGenerator targetPackage="cn.tmq.service.notebook.mapper" targetProject="service-provider-note/src/main/java" type="XMLMAPPER" />
+    <table schema="my_notebook" tableName="m_notes" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+    	<!-- 防止默认产生XXXXWithBlobs的文件 -->
+    	<columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR" />
+    	<columnOverride column="display_content" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </table>
+  </context>
+</generatorConfiguration>

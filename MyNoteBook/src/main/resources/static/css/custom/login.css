@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+body {
+	background: url("../../image/sakura.jpg");
+}
+
+/*  .form-bg-bottom {
+	border:  1px solid black;
+	border-radius: 20px;
+	filter:alpha(Opacity=50);-moz-opacity:0.5;opacity: 0.5;  50表示透明度50%(ie),0.5表示透明度设置50%,
+	background-color: pink;
+	z-index: 1;
+	height:cal(100%);
+}  */
+.form-bg {
+	border: 1px solid pink;
+	border-radius: 20px;
+	z-index: 2;
+	background-color: #ffc0cb8c;
+	padding: 5%;
+	margin-top: 45%;
+}
+
+.btn-login {
+	background-color: #d8a1adbf !important;
+}
+
+.input-addon-icon {
+	color: #c18282 !important;
+	background-color: #f4e8e89e;
+}
+
+@media screen and (max-width: 768px) {
+	body {
+		background: url("../../image/bg.jpg");
+	}
+}

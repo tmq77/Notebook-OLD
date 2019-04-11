@@ -1,0 +1,22 @@
+#bootstrap.yml会先于application.yml加载
+#Spring Cloud中有“引导上下文”的概念，引导上下文加载bootstrap.yml／bootstrap.properties，
+#而且具有更高的优先级，默认情况下bootstrap.yml／bootstrap.properties中的属性不能被覆盖。
+server:
+  port: 8500
+spring:
+  application:
+    name: service-gateway  #指明在集群中的服务名
+  cloud:
+    config:
+      discovery:
+        enabled: true  #开启配置中心的服务发现,用于发现配置
+        service-id: service-config-server  #指定配置服务器
+      label: master  #指定仓库分支
+      profile: pro #指定文件,，这里指的是{application}-{profile}.yml application指spring.application.name的值
+                   #这里找寻的文件为service-gateway-pro.yml 访问方式为 localhost:10001/service-gateway/pro
+eureka:  #注册中心配置需要放在bootstrap中,否则无法在第一时间注册，这样就无法读取注册中心中的配置服务器了
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://server-8888:8888/eureka/,http://server-9999:9999/eureka/

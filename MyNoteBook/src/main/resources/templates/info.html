@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text=#{info.title}>提示信息</title>
+<link rel="icon" type="image/x-icon" th:href="@{/image/favicon.ico}" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/toastr.min.css}" />
+<script th:src="@{/js/jquery/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/toastr.min.js}"></script>
+<script th:src="@{/js/custom/global.js}"></script>
+<script>
+$(() => {
+	let count = 3;
+	let error = $("#error").val();
+	if (error != "1") {
+		let loop = setInterval(() => {
+			toastr.clear();
+			if (count <= 0) {
+				clearInterval(loop);
+				$("form").submit();
+			}
+				
+			toastr.info(count + "秒后进入之前的页面");
+			count--;
+		}, 1000);
+	}
+})
+
+</script>
+</head>
+<body>
+	<form th:action="${url}" method="get">
+		<input type="hidden" id="url" th:value="${url}"> <input type="hidden" id="error"
+			th:value="${error}">
+		<div class="alert alert-success" style="z-index: 998; position: fixed; top: 0; left: 0; right: 0"
+			th:if="${error != '1'}">
+			<a href="#" class="close" data-dismiss="alert"> &times; </a>
+			<p th:text="${message}" />
+		</div>
+		<div class="alert alert-danger" style="z-index: 999; position: fixed; top: 0; left: 0; right: 0"
+			th:if="${error == '1'}">
+			<a href="#" class="close" data-dismiss="alert"> &times; </a>
+			<p th:text="${message}" />
+		</div>
+		<div style="font-size: 3em">根据需要定制</div>
+	</form>
+</body>
+</html>

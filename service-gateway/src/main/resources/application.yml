@@ -1,0 +1,43 @@
+#server:
+#  port: 8500
+#spring:
+#  application:
+#    name: service-gateway  #指明在集群中的服务名
+
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    service-url:
+#      defaultZone: http://server-8888:8888/eureka/,http://server-9999:9999/eureka/
+#zuul:
+#  ribbon:
+#    eager-load:
+#      enabled: true
+#  routes:
+#    test:
+      #path: test123/**           #指定了path属性，那么网关会将path地址作为映射此处输入localhost:8500/test123 会跳转到www.baidu.com
+#      url: http://www.baidu.com   #默认情况下,如果不指定path属性，那么网关会将routeId作为path,此处输入localhost:8500/test即可跳转到www.baidu.com
+#    myNotebook:
+#      path: /myNotebook/**
+#      #url: http://localhost:9000/invoke/** #在简单路由中，默认的即为简单路由，url需要指定为http开头或者https开头,因为简单路由默认使用HttpClient进行转发
+#      service-id: service-invoker #这里指定了service-id，用的是ribbon路由，如果不指定path，
+                                  #则默认使用routeId进行映射,这里将service-invoker映射为/myNotebook
+                                  #例如访问localhost:8500/myNotebook   => localhost:9000/
+                                  #localhost:8500/myNotebook/invoke/{1} => http://service-invoker/invoke/{1}
+                                  #localhost:8500/myNotebook/ 将会返回404,因为service-invoker中没有【/】对应的方法处理，只有invoke/{1}
+#  host:
+#    connect-timeout-millis: 8000
+#    connection-request-timeout-millis: 1000
+#    socket-timeout-millis: 8000
+#hystrix:   #这里配置了网关的超时时间，在服务调用者中配置的是feign中的超时时间，两者应该不一致
+#  command: #报黄线不用管，经测试，该项目可用
+#    default:
+#       execution:
+#          isolation:
+#            thread:
+#              timeoutInMilliseconds: 8000   #配置的默认超时时间为1秒
+#ribbon:
+#   ConnectTimeout: 6000  #zuul自带了hystrix和ribbon，根据官网解释，ribbon的超时时间需要小于hystrix，否则会触发重试
+#   ReadTimeout: 6000 
+  

@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+/* 重写bootstrap.min.css中的属性 */
+.modal-header {
+	padding : 5px !important;
+}
+/* 重写bootstrap.min.css中的属性 */
+.modal-footer {
+	padding : 5px !important;
+}
+/* 重写editormd中的属性 */
+.editormd {
+	margin: 0px auto 0px !important;
+}
+
+.footer {
+	display:none;
+}

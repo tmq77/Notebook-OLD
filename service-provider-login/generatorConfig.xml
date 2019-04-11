@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+  <context id="context1">
+  <!-- ?nullCatalogMeansCurrent=true为了解决不生成select和insert的问题 -->
+    <jdbcConnection connectionURL="jdbc:mysql://192.168.3.39:3306/my_notebook?nullCatalogMeansCurrent=true" 
+    driverClass="com.mysql.cj.jdbc.Driver" 
+    password="LYH66666" 
+    userId="myblog" />
+    <javaModelGenerator targetPackage="cn.tmq.service.login.entity" 
+    	targetProject="service-provider-login/src/main/java" />
+    <sqlMapGenerator targetPackage="cn.tmq.service.login.mapper" targetProject="service-provider-login/src/main/resources" />
+    <javaClientGenerator targetPackage="cn.tmq.service.login.mapper" targetProject="service-provider-login/src/main/java" type="XMLMAPPER" />
+    <table schema="my_notebook" tableName="m_users" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+    </table>
+    <table schema="my_notebook" tableName="m_user_details" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+    </table>
+  </context>
+</generatorConfiguration>

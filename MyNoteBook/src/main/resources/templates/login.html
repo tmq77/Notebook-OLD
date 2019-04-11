@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title th:text="#{login.title}"></title>
+<link rel="icon" type="image/x-icon" th:href="@{/image/favicon.ico}" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<link rel="stylesheet" th:href="@{/css/toastr.min.css}" />
+<link rel="stylesheet" th:href="@{/css/custom/login.css}">
+</head>
+<body>
+<form th:action="@{/login}" method="post">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<div class="form-bg">
+						<hr>
+						<div class="input-group">
+							<span class="input-group-addon input-addon-icon"><i class="glyphicon glyphicon-user"></i></span> <input
+								type="text" th:class="form-control" placeholder="用户名" name="account" required />
+						</div>
+						<br>
+						<div class="input-group">
+							<span class="input-group-addon input-addon-icon"><i class="glyphicon glyphicon-lock"></i></span> <input
+								type="password" name="password" th:class="form-control" placeholder="密码" required/>
+						</div>
+						<br>
+						<div>
+							<div>
+								<input type="checkbox" name="remember" value="1" /> <label for="remember"
+									style="color: white" th:text="#{login.remember}"></label> <a th:text="#{login.regist}"
+									th:href="@{/regist}" class="pull-right"
+									style="text-decoration: none; color: white; cursor: pointer;"></a>
+							</div>
+						</div>
+						<br>
+						<div>
+							<button type="button" class="btn btn-block btn-success btn-login" th:text="#{login.login}"></button>
+						</div>
+						<hr>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<script th:src="@{/js/jquery/jquery.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/toastr.min.js}"></script>
+	<script th:src="@{/js/md5.js}"></script>
+	<script th:src="@{/js/custom/global.js}"></script>
+	<script th:src="@{/js/custom/login.js}"></script>
+</body>
+</html>

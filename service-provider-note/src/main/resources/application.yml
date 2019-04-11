@@ -1,0 +1,10 @@
+server:
+  port: 9003
+spring:
+  profiles: service-provider-note-9003
+---
+
+server:
+  port: 9004
+spring:
+  profiles: service-provider-note-9004

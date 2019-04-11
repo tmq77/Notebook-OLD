@@ -1,0 +1,51 @@
+@charset "UTF-8";
+
+a {
+	text-decoration: none;
+}
+
+a :hover {
+	color: black;
+}
+
+.error-field {
+	border: 2px solid red;
+}
+
+.radius {
+	border-radius: 25px;
+}
+
+.default-font-size {
+	font-size: 1em;
+}
+
+.button-in-div-padding {
+	padding: 15px;
+}
+
+.well-group>.well {
+	margin-bottom: 8px;
+}
+
+.well-sm {
+	margin-bottom: 10px;
+}
+
+
+.fixedTool {
+	position: fixed;
+	top:3%;
+	left:1%;
+	z-index: 1;
+}
+
+@media screen and (max-width: 600px) {
+	
+	.well-group>.well {
+		padding: 14px;
+	}
+	.well-sm {
+		padding: 8px;
+	}
+}

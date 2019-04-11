@@ -1,0 +1,63 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: service-invoker
+  profiles: service-invoker-9000
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://server-8888:8888/eureka/,http://server-9999:9999/eureka/  #在注册中心中进行注册
+logging:
+  level:
+    cn:
+      tmq:
+        service:
+          invoker:
+            client: debug
+ 
+
+feign:
+  hystrix:
+    enabled: true #Feign整合Hystrix, 除了需要引入依赖,也要打开开关
+hystrix:
+  command:
+    default:
+       execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 5000   #默认超时时间
+---
+server:
+  port: 8999
+spring:
+  application:
+    name: service-invoker
+  profiles: service-invoker-8999
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://server-8888:8888/eureka/,http://server-9999:9999/eureka/  #在注册中心中进行注册
+
+logging:
+  level:
+    cn:
+      tmq:
+        service:
+          invoker:
+            client: debug
+      
+feign:
+  hystrix:
+    enabled: true #Feign整合Hystrix, 除了需要引入依赖,也要打开开关
+hystrix:
+  command:
+    default:
+       execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 5000   #默认超时时间

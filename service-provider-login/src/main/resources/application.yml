@@ -1,0 +1,41 @@
+server:
+  port: 9001
+spring:
+#  application:
+#    name: service-provider-login  #服务名称 
+#  datasource:
+#    url: jdbc:mysql://192.168.3.39:3306/my_notebook
+#    username: myblog
+#    password: LYH66666
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+  profiles: service-provider-login-9001   #可以不设置多个profile,直接在eclipse中配置多启动即可，但是考虑到实际部署,还是需要这个属性的
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    instance-info-replication-interval-seconds: 90 #健康指示器每90秒刷新一次状态
+#    service-url:
+#      defaultZone: http://server-8888:8888/eureka/, http://server-9999:9999/eureka/  #在注册中心中进行注册
+#mybatis:
+#  mapper-locations: classpath*:cn/tmq/service/login/mapper/**/*.xml
+---
+server:
+  port: 9002
+spring:
+#  application:
+#    name: service-provider-login  #服务名称 
+#  datasource:
+#    url: jdbc:mysql://192.168.3.39:3306/my_notebook
+#    username: myblog
+#    password: LYH66666
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+  profiles: service-provider-login-9002
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    instance-info-replication-interval-seconds: 60 #健康指示器每60秒刷新一次状态
+#    service-url:
+#      defaultZone: http://server-8888:8888/eureka/, http://server-9999:9999/eureka/  #在注册中心中进行注册
+#mybatis:
+#  mapper-locations: classpath*:cn/tmq/service/login/mapper/**/*.xml

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="#{home.title}"></title>
+<link rel="icon" type="image/x-icon" th:href="@{/image/favicon.ico}" />
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/editor.md/css/editormd.min.css}" />
+<link rel="stylesheet" th:href="@{/css/toastr.min.css}" />
+<link rel="stylesheet" th:href="@{/css/custom/global.css}" />
+<link rel="stylesheet" th:href="@{/css/custom/home.css}" />
+</head>
+<body>
+	<div class="alert alert-danger" style="z-index: 999; position: fixed; top: 0; left: 0; right: 0"
+		th:if="${error == '1'}">
+		<a href="#" class="close" data-dismiss="alert"> &times; </a>
+		<p th:text="${message}" />
+	</div>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<div class="col-md-2"></div>
+			<div class="col-md-8 col-sm-12">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse"
+						data-target="#index-navbar-collapse">
+						<span class="sr-only"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#"> <span class="glyphicon glyphicon-home"
+						th:utext="#{home.title}"></span></a>
+				</div>
+
+				<div class="collapse navbar-collapse" id="index-navbar-collapse">
+					<ul class="nav navbar-nav navbar-left">
+						<li><a href="#" th:text="#{home.nav1}"></a></li>
+						<li><a href="#" th:text="#{home.nav2}"></a></li>
+						<li><a href="#" th:text="#{home.nav3}"></a></li>
+						<li><a href="#" th:text="#{home.nav4}"></a></li>
+					</ul>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li><a th:href="@{/login}"><span class="glyphicon glyphicon-user"></span> </a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+	</nav>
+	<div class="container-fluid">
+		<div class="row">
+			<!-- 前2后2 中间居中 -->
+			<div class="col-md-2"></div>
+			<div class="col-md-8 col-sm-12">
+				<div class="radius well well-sm">
+					<div class="center-block" style="width: 80%">
+						<a class="btn btn-default btn-block radius hide-btn" id="new" data-toggle="modal"
+							data-target="#modal-new-note"> <span class="glyphicon glyphicon-pencil"
+							th:utext="#{home.new}"></span>
+						</a>
+					</div>
+				</div>
+				<!-- 笔记列表 -->
+				<div class="well-group default-font-size" id="content-list">
+					<a href="#" class="list-group-item default-font-size note-list" th:each="item: ${list}"
+						th:href="@{'/note/' + ${item.id}}" th:text="${item.title}"></a>
+				</div>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+		<div class="row footer">
+			<div class="col-md-2"></div>
+			<div class="col-md-4 col-sm-12">
+				<ul class="pagination">
+					<li><a th:href="@{'/notes/' + '0'}" th:text="#{home.previous}">&laquo;</a></li>
+					<!-- <li th:class="${page == item.value ? active : ""}"><a href="#">1</a></li> -->
+					<li><a href="#">1</a></li>
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">5</a></li>
+					<li><a href="#" th:text="#{home.next}">&raquo;</a></li>
+				</ul>
+			</div>
+			<div class="col-md-6"></div>
+		</div>
+	</div>
+	<!-- 用于新建笔记的模态框 -->
+	<form th:action="@{/note}" method="post" id="frm-create">
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="modal-new-note" tabindex="-1" role="dialog" aria-hidden="true"
+			data-backdrop="false" data-keyboard="false">
+			<div class="modal-dialog" style="width: 80%">
+				<div class="modal-content">
+					<!-- 模态框标题 -->
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<!-- 输入标题 -->
+						<div class="input-group" style="width: 85%; margin: 0 auto 0px">
+							<span class="input-group-addon" th:text="#{home.modal-title}"></span> <input type="text"
+								maxlength="60" placeholder="输入标题,最多60个字符。。" class="form-control" name="txt-title"
+								id="txt-title" /> <span class="input-group-btn"><button type="button"
+									class="btn btn-default" th:text="#{home.clear}" id="btn-clear"></button></span>
+						</div>
+					</div>
+					<div class="modal-body" id="my-editormd">
+						<!-- 富文本編輯器 -->
+						<textarea id="my-editormd-markdown-doc" name="my-editormd-markdown-doc" style="display: none"></textarea>
+					</div>
+					<!-- 模态框底部 -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-info" id="btn-save">
+							<span class="glyphicon glyphicon-ok"></span>
+						</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">
+							<span class="glyphicon glyphicon-off"></span>
+						</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+	</form>
+
+	<script th:src="@{/js/jquery/jquery.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/editor.md/editormd.min.js}"></script>
+	<script th:src="@{/js/toastr.min.js}"></script>
+	<script th:src="@{/js/custom/global.js}"></script>
+	<script th:src="@{/js/custom/home.js}"></script>
+</body>
+</html>

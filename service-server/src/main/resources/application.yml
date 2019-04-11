@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: service-server  #上下的spring.application.name必须一致，这里的application.name同时也是配置文件映射的name
+  profiles: server-8888
+server:
+  port: 8888                        #服务管理中心端口
+eureka:
+  client:
+    #register-with-eureka: false     #(单节点时设置false)防止将自己当作客户端去注册从而引发Cannot execute request on any known server 问题
+    #fetch-registry: false           #同上
+    service-url:
+      defaultZone: http://server-9999:9999/eureka/  #默认使用8761，需要手动覆盖成自己的，注意加端口
+  instance:
+    hostname: server-8888
+---
+spring:
+  application:
+    name: service-server
+  profiles: server-9999
+server:
+  port: 9999                        #服务管理中心端口
+eureka:
+  client:
+    #register-with-eureka: false     #(单节点时设置false)防止将自己当作客户端去注册从而引发Cannot execute request on any known server 问题
+    #fetch-registry: false           #同上
+    service-url:
+      defaultZone: http://server-8888:8888/eureka/  #默认使用8761，需要手动覆盖成自己的
+  instance:
+    hostname: server-9999
+
