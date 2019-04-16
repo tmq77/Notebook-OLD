@@ -18,6 +18,11 @@ import cn.tmq.service.notebook.entity.MNotes;
 import cn.tmq.service.notebook.service.CreateNoteService;
 import cn.tmq.service.notebook.utils.IdGeneratorUtil;
 
+/**
+ * 创建笔记
+ * @author 陶敏麒
+ *
+ */
 @RestController
 public class CreateNoteController {
 
@@ -32,7 +37,7 @@ public class CreateNoteController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/note", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/notes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Map<String, Object> notes(@RequestParam Map<String, String> paramMap) throws Exception {
 		try {
 			Map<String, Object> resultMap = this.supplier.get();

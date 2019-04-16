@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 import cn.tmq.service.invoker.client.LoginClient;
 
 @Component
-public class LoginClientFallBack implements LoginClient {
+public class LoginClientFallback implements LoginClient {
 
 	@Override
 	public Map<String, Object> login(Map<String, String> paramMap) {
 		// TODO Auto-generated method stub
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("status", "777");
-		resultMap.put("message", "系统异常,登录失败");
+		resultMap.put("message", "调用服务信息：系统异常,登录失败");
 		return resultMap;
 	}
 
@@ -24,7 +24,7 @@ public class LoginClientFallBack implements LoginClient {
 		// TODO Auto-generated method stub
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("status", "777");
-		resultMap.put("message", "系统异常,注册失败");
+		resultMap.put("message", "调用服务信息：系统异常,注册失败");
 		return resultMap;
 	}
 

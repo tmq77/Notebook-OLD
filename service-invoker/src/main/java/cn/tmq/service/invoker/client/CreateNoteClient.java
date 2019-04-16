@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import cn.tmq.service.invoker.client.fallBackClass.CreateNoteClientFallBack;
+import cn.tmq.service.invoker.client.fallBackClass.CreateNoteClientFallback;
 
 /**
  * feign客户端接口，用于调取服务端的接口
@@ -17,7 +17,7 @@ import cn.tmq.service.invoker.client.fallBackClass.CreateNoteClientFallBack;
  * @author 陶敏麒
  * @version 1.0
  */
-@FeignClient(name = "service-provider-note",fallback = CreateNoteClientFallBack.class)
+@FeignClient(name = "service-provider-note",fallback = CreateNoteClientFallback.class)
 public interface CreateNoteClient {
 	
 	/**
@@ -26,7 +26,7 @@ public interface CreateNoteClient {
 	 * @param paramMap get请求方式的参数需要使用@RequestParam 并用Map构造，如果不用@RequestParam注解,会被强制转化为post提交
 	 * @return
 	 */
-	@RequestMapping(value = "/note", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/notes", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
 	Map<String, Object> notes(@RequestParam Map<String, String> paramMap);
 	
 	/**

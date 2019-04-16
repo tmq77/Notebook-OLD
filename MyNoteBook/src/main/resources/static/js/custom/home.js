@@ -14,25 +14,26 @@ $(() => {
 		// 下一页
 		let nextHref = "/notes?page=" + next;
 		
-		if (pre <= 0) {
+		if (cur <= 1) {
 			// 已经是第一页,上一页按钮的href指向#
 			preHref = "#";
 		}
 		
-		if (next >= pageCount) {
+		if (cur >= pageCount) {
 			// 已经是最后一页，下一页按钮的href指向#
 			nextHref = "#";
 		}
-		
-		let li = '<li><a th:href="' + preHref + '">&laquo;上一页</a></li>';
+		// 上一页按钮
+		let li = '<li><a href="' + preHref + '">&laquo;上一页</a></li>';
 		for (let i = 1; i <= pageCount; i++) {
 			li += "<li><a href='/notes?page=" + i +"'>" + i + "</a></li>";
 		}
+		// 下一页按钮
 		li += '<li><a href="' + nextHref + '">下一页&raquo;</a></li>';
 		$(".pagination").append(li);
 	};
 	
-	if ($(".note-list").length >= 10) {
+	if ($(".note-list").length >= 10 || $("#page-index").val() > 1) {
 		$(".footer").show();
 		// 根据页数拼接页数按钮
 		let count = parseInt($("#page-count").text());

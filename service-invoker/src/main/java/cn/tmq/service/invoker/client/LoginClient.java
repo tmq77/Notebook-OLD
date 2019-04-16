@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import cn.tmq.service.invoker.client.fallBackClass.LoginClientFallBack;
+import cn.tmq.service.invoker.client.fallBackClass.LoginClientFallback;
 
 /**
  * feign客户端接口，用于调取服务端的接口
@@ -16,7 +16,7 @@ import cn.tmq.service.invoker.client.fallBackClass.LoginClientFallBack;
  * @author 陶敏麒
  *
  */
-@FeignClient(name = "service-provider-login",fallback = LoginClientFallBack.class)
+@FeignClient(name = "service-provider-login",fallback = LoginClientFallback.class)
 public interface LoginClient {
 	
 	/**

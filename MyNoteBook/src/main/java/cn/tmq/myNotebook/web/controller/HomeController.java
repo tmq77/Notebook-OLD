@@ -19,7 +19,7 @@ import cn.tmq.myNotebook.constants.Message;
 import cn.tmq.myNotebook.web.responseDto.UserNotesResponseDto;
 
 /**
- * 主页操作处理器:新建/删除/更新
+ * 主页操作处理器:新建/一览
  * 2019年4月3日 21点58分
  * @author 陶敏麒
  * @version 1.0

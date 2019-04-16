@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import cn.tmq.service.invoker.client.CreateNoteClient;
 import cn.tmq.service.invoker.client.LoginClient;
+import cn.tmq.service.invoker.client.ViewNoteClient;
 
 /**
  * 微服务调用者,所有的微服务的入口,外部请求通过网关后会全部交由本调用者处理,进行进一步的分发、调用
@@ -37,6 +38,9 @@ public class InvokController {
 	
 	@Autowired
 	private CreateNoteClient createNoteClient;
+	
+	@Autowired
+	private ViewNoteClient viewNoteClient;
 
 	@Value("${server.port}")
 	private String port;
@@ -69,6 +73,9 @@ public class InvokController {
 			} else if ("notes".equals(serviceId)) {
 				// 主页
 				resultMap = this.createNoteClient.notes(paramMap);
+			} else if ("view".equals(serviceId)) {
+				// 查看笔记
+				return this.viewNoteClient.view(paramMap);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

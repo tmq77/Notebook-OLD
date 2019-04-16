@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 import cn.tmq.service.invoker.client.CreateNoteClient;
 
 @Component
-public class CreateNoteClientFallBack implements CreateNoteClient{
+public class CreateNoteClientFallback implements CreateNoteClient{
 
 	@Override
 	public Map<String, Object> notes(Map<String, String> paramMap) {
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("status", "777");
-		resultMap.put("message", "系统异常,获取笔记列表失败");
+		resultMap.put("message", "调用服务信息：系统异常,获取笔记列表失败");
 		return resultMap;
 	}
 	
@@ -23,7 +23,7 @@ public class CreateNoteClientFallBack implements CreateNoteClient{
 		// TODO Auto-generated method stub
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("status", "777");
-		resultMap.put("message", "系统异常,新建笔记失败");
+		resultMap.put("message", "调用服务信息：系统异常,新建笔记失败");
 		return resultMap;
 	}
 }
