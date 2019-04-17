@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import cn.tmq.service.invoker.client.CreateNoteClient;
+import cn.tmq.service.invoker.client.NoteClient;
 import cn.tmq.service.invoker.client.LoginClient;
-import cn.tmq.service.invoker.client.ViewNoteClient;
 
 /**
  * 微服务调用者,所有的微服务的入口,外部请求通过网关后会全部交由本调用者处理,进行进一步的分发、调用
@@ -37,11 +36,8 @@ public class InvokController {
 	private LoginClient loginClient;
 	
 	@Autowired
-	private CreateNoteClient createNoteClient;
+	private NoteClient noteClient;
 	
-	@Autowired
-	private ViewNoteClient viewNoteClient;
-
 	@Value("${server.port}")
 	private String port;
 
@@ -69,19 +65,19 @@ public class InvokController {
 				resultMap = this.loginClient.login(paramMap);
 			} else if ("note".equals(serviceId)) {
 				// 新建笔记
-				resultMap = this.createNoteClient.note(paramMap);
+				resultMap = this.noteClient.note(paramMap);
 			} else if ("notes".equals(serviceId)) {
 				// 主页
-				resultMap = this.createNoteClient.notes(paramMap);
+				resultMap = this.noteClient.notes(paramMap);
 			} else if ("view".equals(serviceId)) {
 				// 查看笔记
-				return this.viewNoteClient.view(paramMap);
+				return this.noteClient.view(paramMap);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			// 新异常会由网关捕获并触发回退
 			// 如果不抛出异常或者被提前捕获，那么网关不会触发回退
-			throw new Exception("服务调用者异常");
+			throw new Exception("调用信息:服务调用者异常");
 		}
 		return resultMap;
 	}

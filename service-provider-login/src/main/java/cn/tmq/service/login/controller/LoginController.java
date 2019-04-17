@@ -45,6 +45,7 @@ public class LoginController {
 			if (paramMap.get("password").equals(loginUserInfo.getPassword())) {
 				// 验证成功
 				resultMap.put("status", "200");
+				resultMap.put("message", "验证成功");
 				resultMap.put("result", loginUserInfo);
 				return resultMap;
 			} else {

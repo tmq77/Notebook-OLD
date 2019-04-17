@@ -58,6 +58,7 @@ public class BaseController {
 	 * @param model 页面数据模型
 	 * @param successView 正常处理的页面
 	 * @param failureView 处理失败的页面
+	 * @param url 在post -> redirect -> get 方式下，需要传入url，传入url后信息页面会在一定时间后自动跳转到该url
 	 * @return
 	 * @throws Exception 信息体为空
 	 */

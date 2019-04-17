@@ -13,6 +13,7 @@ import cn.tmq.service.invoker.client.fallBackClass.LoginClientFallback;
  * feign客户端接口，用于调取服务端的接口
    *  注解中的值指注册在eureka服务中心中的服务名,即服务提供者的spring.application.name
    *  这个接口调用的是登录功能的远程微服务
+   *  
  * @author 陶敏麒
  *
  */

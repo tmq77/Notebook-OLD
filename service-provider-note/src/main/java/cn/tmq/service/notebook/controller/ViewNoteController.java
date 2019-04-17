@@ -50,6 +50,10 @@ public class ViewNoteController {
 				resultMap.put("message", "笔记不存在");
 			} else {
 				// 笔记存在
+				// blob读出来的是ISO-8859-1编码，需要转换为UTF-8编码才可以
+				// 如果你确认全部是文本文件，可以采用Text类型,本例中mysql使用了blob
+				String content = new String(note.getContent().getBytes("ISO-8859-1"), "UTF-8");
+				note.setContent(content);
 				resultMap.put("status", "200");
 				resultMap.put("result", note);
 			}
