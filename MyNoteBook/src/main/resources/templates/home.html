@@ -59,10 +59,12 @@
 						</a>
 					</div>
 				</div>
-				<!-- 笔记列表 -->
+				<!-- 笔记列表  deleteNote(this); return false;-->
 				<div class="well-group default-font-size" id="content-list">
 					<a href="#" class="list-group-item default-font-size note-list" th:each="item: ${list}"
-						th:href="@{'/note/' + ${item.id}}" th:text="${item.title}"></a>
+						th:href="@{'/note/' + ${item.id}}"><span th:text="${item.title}"></span> <span
+						class="badge delete"><i class="glyphicon glyphicon-trash"></i></span><span
+						class="badge" onclick="alert(1)"><i class="glyphicon glyphicon-edit"></i></span></a>
 				</div>
 			</div>
 			<div class="col-md-2"></div>
@@ -71,7 +73,7 @@
 			<div class="col-md-2"></div>
 			<div class="col-md-4 col-sm-10">
 				<!-- 分页控件 -->
-				<ul class="pagination" >
+				<ul class="pagination">
 				</ul>
 				<input type="hidden" th:value="${page}" id="page-index">
 			</div>
