@@ -9,10 +9,9 @@ spring:
         git:  #配置Git仓库地址   默认使用的就是git
           uri: https://github.com/tmq77/ConfigRepository   #git地址
           #uri: git@github.com:tmq77/ConfigRepository.git
-          default-label: master    #Git仓库的分支名，默认为master
-          username: tmq77
-          password: tASDFG12345
+          default-label: master    #Git仓库的分支名，默认为master     
           username: ****** #git用户名(非邮箱)
+          password: ******
           skipSslValidation: true
           basedir: ./tmp/    #需要指定git文件checkout的目录，否则会无法克隆git仓库！！！！！！
 #整合eureka注册服务器，将配置中心注册到eureka
@@ -21,4 +20,4 @@ eureka:
     service-url:
       defaultZone: http://server-8888:8888/eureka/,http://server-9999:9999/eureka/
   instance:
-    hostname: localhost    hostname: localhost    hostname: localhost    hostname: localhost
+    hostname: localhost
