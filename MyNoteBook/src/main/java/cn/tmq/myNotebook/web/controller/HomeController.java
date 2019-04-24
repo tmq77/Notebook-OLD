@@ -11,8 +11,10 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.tmq.myNotebook.constants.Constants;
 import cn.tmq.myNotebook.constants.Message;
@@ -56,7 +58,7 @@ public class HomeController extends BaseController{
 			model.addAttribute("page", pageIndex);
 			// 获取总页数
 			model.addAttribute("pageCount", this.calculatePages(Integer.parseInt(message.getAddition().toString())));
-			return this.validateResult(message, model, Constants.VIEW_HOME, Constants.VIEW_HOME, null);
+			return this.validateResult(message, model, Constants.VIEW_HOME, Constants.VIEW_HOME);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return this.exceptionHandler(model);
@@ -80,35 +82,62 @@ public class HomeController extends BaseController{
 	 * 新建笔记
 	 * @param request
 	 * @param session
-	 * @param model
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/note", method=RequestMethod.POST)
-	public String blog(HttpServletRequest request, HttpSession session, Model model) {
+	@ResponseBody
+	public Map<String, Object> blog(HttpServletRequest request, HttpSession session) {
+		Map<String, Object> resultMap = this.supplier.get();
+		resultMap.put("error", "1");
+		resultMap.put("message", "系统异常");
 		try {
 			// 必须项目check
 			String title = request.getParameter("txt-title");
 			String content = request.getParameter("my-editormd-markdown-doc");
 			String contentHtml = request.getParameter("my-editormd-html-code");
-			if (StringUtils.isEmpty(title) || StringUtils.isEmpty(content) || StringUtils.isEmpty(contentHtml)) {
-				model.addAttribute("error", "1");
-				model.addAttribute("message", "必须项目不能为空");
-				return Constants.VIEW_HOME;
+			if (StringUtils.isAnyEmpty(title,content,contentHtml)) {
+				// 必须check
+				resultMap.put("message", "必须项目不能为空");
+			} else {
+				Map<String, Object>  paramMap = this.supplier.get();
+				paramMap.put("title", title);
+				paramMap.put("content", content);
+				paramMap.put("contentHtml", contentHtml);
+				paramMap.put("id", ((Map<String, Object>)session.getAttribute(Constants.SESSION_USER)).get("id"));
+				// 远程调用
+				Message<List<UserNotesResponseDto>> message = this.postForService("note", paramMap);
+				if ("200".equals(message.getStatus())) {
+					resultMap.put("error", "0");
+				}
+				resultMap.put("message", message.getMessage());
 			}
-			
-			Map<String, Object>  paramMap = new HashMap<>();
-			paramMap.put("title", title);
-			paramMap.put("content", content);
-			paramMap.put("contentHtml", contentHtml);
-			paramMap.put("id", ((Map<String, Object>)session.getAttribute(Constants.SESSION_USER)).get("id"));
-			// 远程调用
-			Message<List<UserNotesResponseDto>> message = this.postForService("note", paramMap);
-			return this.validateResult(message, model, Constants.VIEW_INFO, Constants.VIEW_HOME, "/notes");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return this.exceptionHandler(model);
 		}
+		return resultMap;
+	}
+	
+	@RequestMapping(value = "/note/{id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public Map<String, Object> note(@PathVariable("id") String id) {
+		Map<String, Object> resultMap = this.supplier.get();
+		resultMap.put("error", "1");
+		resultMap.put("message", "系统异常");
+		try {
+			Map<String, Object>  paramMap = this.supplier.get();
+			paramMap.put("id", id);
+			
+			Message<String> message = this.postForService("delete", paramMap);
+			
+			if ("200".equals(message.getStatus())) {
+				resultMap.put("error", "0");
+			}
+			resultMap.put("message", message.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultMap;
 	}
 
 }

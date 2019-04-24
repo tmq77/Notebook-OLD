@@ -5,7 +5,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
@@ -58,11 +57,10 @@ public class BaseController {
 	 * @param model 页面数据模型
 	 * @param successView 正常处理的页面
 	 * @param failureView 处理失败的页面
-	 * @param url 在post -> redirect -> get 方式下，需要传入url，传入url后信息页面会在一定时间后自动跳转到该url
 	 * @return
 	 * @throws Exception 信息体为空
 	 */
-	protected <T> String validateResult(Message<T> message, Model model,String successView, String failureView,String url) throws Exception {
+	protected <T> String validateResult(Message<T> message, Model model,String successView, String failureView) throws Exception {
 		
 		if (null == message) {
 			throw new Exception("系统异常");
@@ -70,9 +68,6 @@ public class BaseController {
 		model.addAttribute("message", message.getMessage());
 		// 根据返回值的更新数据来判断成功与否
 		if ("200".equals(message.getStatus())) {
-			if (!StringUtils.isEmpty(url)) {
-				model.addAttribute("url", url);
-			}
 			return successView;
 		} else {
 			// 异常或者处理失败

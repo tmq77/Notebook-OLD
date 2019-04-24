@@ -12,6 +12,11 @@ public class ViewNoteService {
 	@Autowired
 	private MNotesMapper mapper;
 	
+	/**
+	 * ªÒ»°± º«
+	 * @param id
+	 * @return
+	 */
 	public MNotes selectNotesById(String id) {
 		return this.mapper.selectByPrimaryKey(id);
 	} 

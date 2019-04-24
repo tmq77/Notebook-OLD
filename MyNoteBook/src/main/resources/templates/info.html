@@ -12,19 +12,13 @@
 <script th:src="@{/js/custom/global.js}"></script>
 <script>
 $(() => {
-	let count = 3;
+	let count = 2;
 	let error = $("#error").val();
 	if (error != "1") {
-		let loop = setInterval(() => {
-			toastr.clear();
-			if (count <= 0) {
-				clearInterval(loop);
-				$("form").submit();
-			}
-				
-			toastr.info(count + "秒后进入之前的页面");
-			count--;
+		setTimeout(() => {
+			$("form").submit();
 		}, 1000);
+		
 	}
 })
 

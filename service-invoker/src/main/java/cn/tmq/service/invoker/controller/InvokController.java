@@ -57,21 +57,30 @@ public class InvokController {
 		Map<String, Object> resultMap = new HashMap<>();
 		try {
 			if ("regist".equals(serviceId)) {
+				System.out.println("调用注册服务;参数【" + paramMap + "】");
 				// Map.class 参数代表,这次请求期望返回的类型是Map类型
 				// 这里如果调用出错，将不会触发回退，因为只提供了feign的回退处理，restTemplate需要另外处理
 				resultMap = this.restTemplate.postForObject("http://service-provider-login/user", paramMap, Map.class);
 			} else if ("login".equals(serviceId)) {
 				// 登录
+				System.out.println("调用登录服务;参数【" + paramMap + "】");
 				resultMap = this.loginClient.login(paramMap);
 			} else if ("note".equals(serviceId)) {
 				// 新建笔记
+				System.out.println("调用新建笔记服务;参数【" + paramMap + "】");
 				resultMap = this.noteClient.note(paramMap);
 			} else if ("notes".equals(serviceId)) {
 				// 主页
+				System.out.println("调用搜索笔记一览服务;参数【" + paramMap + "】");
 				resultMap = this.noteClient.notes(paramMap);
 			} else if ("view".equals(serviceId)) {
 				// 查看笔记
+				System.out.println("调用查看笔记服务;参数【" + paramMap + "】");
 				return this.noteClient.view(paramMap);
+			} else if ("delete".equals(serviceId)) {
+				// 删除笔记(同方法名但是参数不同，java中的重载)
+				System.out.println("调用删除笔记服务;参数【" + paramMap + "】");
+				return this.noteClient.note(paramMap.get("id"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

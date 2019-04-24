@@ -70,7 +70,7 @@ public class LoginController extends BaseController {
 				// TODO 远程调用失败后的处理
 				Message<String> message = this.postForService("regist", paramMap);
 				// 根据返回值的更新数据来判断成功与否
-				return this.validateResult(message, model, Constants.VIEW_LOGIN, Constants.VIEW_REGIST, null);
+				return this.validateResult(message, model, Constants.VIEW_LOGIN, Constants.VIEW_REGIST);
 			} else {
 				model.addAttribute("error", "1");
 				model.addAttribute("message", "必须项目不能为空");

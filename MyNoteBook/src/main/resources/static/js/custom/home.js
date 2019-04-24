@@ -11,10 +11,9 @@
 /*
  * let deleteNote = (_this) => { let url = $(_this).parent().prop("href");
  * $.ajax({ url: url, type: "put", dataType : "json", cache : false, data : { id :
- * $("#title").val(), _method : "put", }, success: () => {
- *  }, error: () => { toastr.error("通信异常"); } }); // return false; 此处return
- * false 链接还是会跳转，需要在外部定义onclick事件处加上return false; etc: onclick="func();return
- * false;" }
+ * $("#title").val(), _method : "put", }, success: () => { }, error: () => {
+ * toastr.error("通信异常"); } }); // return false; 此处return false
+ * 链接还是会跳转，需要在外部定义onclick事件处加上return false; etc: onclick="func();return false;" }
  */
 
 
@@ -50,7 +49,13 @@ $(() => {
 		// 上一页按钮
 		let li = '<li><a href="' + preHref + '">&laquo;上一页</a></li>';
 		for (let i = 1; i <= pageCount; i++) {
-			li += "<li><a href='/notes?page=" + i +"'>" + i + "</a></li>";
+			if (cur == i) {
+				// 当前页按钮添加active类
+				li += "<li class='active'><a href='/notes?page=" + i +"'>" + i + "</a></li>";
+			} else {
+				li += "<li><a href='/notes?page=" + i +"'>" + i + "</a></li>";
+			}
+			
 		}
 		// 下一页按钮
 		li += '<li><a href="' + nextHref + '">下一页&raquo;</a></li>';
@@ -160,6 +165,7 @@ $(() => {
 	
 	// 保存按钮事件:保存文档
 	$("#btn-save").on("click", () => {
+		
 		if (!$.trim($("#txt-title").val())) {
 			toastr.warning("请输入标题");
 			return;
@@ -168,35 +174,98 @@ $(() => {
 			toastr.warning("内容不能为空");
 			return;
 		}
-		$("#frm-create").submit();
+		
+		$.ajax({
+			type:"post",
+			url: "/note",
+			dataType: "json",
+			cache: false,
+			data: {
+				// ajax参数中如果不加引号直接使用 如txt-title的形式，则js解析会报错，带连接符的参数名需要加引号
+				"txt-title": $("#txt-title").val(),
+				"my-editormd-markdown-doc": $("#my-editormd-markdown-doc").val(),
+				"my-editormd-html-code": $("textarea[name='my-editormd-html-code']").val(),
+				_method : "post"
+			},
+			success: (data) => {
+				if (data.error == "0") {
+					toastr.success(data.message);
+					$("#modal-new-note").hide();
+					setTimeout(() => {
+						window.location.href="/notes"; 
+					}, 700);
+				} else {
+					toastr.warning(data.message);
+				}
+			},
+			error: () => { 
+				toastr.error("通信异常"); 
+			}
+		});
 	})
 	
 	// 删除笔记操作
 	// 注意 如果需要用到当前操作对象，
 	// 匿名函数的$(this)指window,所以有操作对象的时候,需要使用function()而不是es6语法的箭头函数
 	$(".delete").on("click", function(){
-		try {
-			let url = $(this).parent().prop("href");
-			// 找到最后出现的“/”,则后续的就是笔记的id
-			let index = url.lastIndexOf("/");
-			let id = url.substr(index + 1);
-			// 正确的id应该是18位以上的纯数字，并且以2开头
-			if (!isAlphaNum(id)) {
-				// toastr.warn("找不到该笔记"); // 这行代码会报异常，会进入catch
-				toastr.warning("找不到该笔记");
-			} else {
-				// 进入后台处理，完成处理后页面不刷新，清除当前点击删除的一条数据
-				// 必要时刻作隐藏分页以及切换到上一页处理
-				/*
-				 * $.ajax({ url: url, type: "put", dataType : "json", cache :
-				 * false, data : { id : $("#title").val(), _method : "put", },
-				 * success: () => {
-				 *  }, error: () => { toastr.error("通信异常"); }
-				 */
-			}
-		} catch (e) {
-			toastr.error("javascript异常：" + e);
-		}
+		// http://www.jq22.com/demo/jqueryConfirm20160413/ 在线演示各种提示框
+		$.confirm({
+	        title: '确认删除?',
+	        content: '确认删除该笔记?',
+	        type: 'blue',
+	        icon: 'glyphicon glyphicon-question-sign',
+	        buttons: {
+	            ok: {
+	                text: '确认',
+	                btnClass: 'btn-info',
+	                action: () => {
+	                	try {
+	            			let url = $(this).parent().prop("href");
+	            			// 找到最后出现的“/”,则后续的就是笔记的id
+	            			let index = url.lastIndexOf("/");
+	            			let id = url.substr(index + 1);
+	            			// 正确的id应该是18位以上的纯数字，并且以2开头
+	            			if (!isAlphaNum(id)) {
+	            				// toastr.warn("找不到该笔记"); // 这行代码会报异常，会进入catch
+	            				toastr.warning("找不到该笔记");
+	            			} else {
+	            				// 进入后台处理，完成处理后页面不刷新，清除当前点击删除的一条数据
+	            				// 必要时刻作隐藏分页以及切换到上一页处理
+	            				$.ajax({ 
+	            					url: url, 
+	            					type: "delete", 
+	            					dataType : "json", 
+	            					cache :false, 
+	            					data : { 
+	            						id : id, 
+	            						_method : "delete"
+	            					},
+	            					success: (data) => {
+	            						if (data.error == "0") {
+	            							toastr.info(data.message);
+	            							setTimeout(() => {
+	            								window.location.href="/notes"; 
+	            							}, 700);
+	            						} else {
+	            							toastr.warning(data.message);
+	            						}
+	            					},
+	            					error: () => { 
+	            						toastr.error("通信异常"); 
+	            					}
+	            				});
+	            		   }
+	            		} catch (e) {
+	            			toastr.error("javascript异常：" + e);
+	            		}
+	                }
+	            },
+	            cancel: {
+	                text: '取消',
+	                btnClass: 'btn-default'
+	            }
+	        }
+	    });
 		return false;
 	})
 	

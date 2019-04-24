@@ -32,7 +32,7 @@ public class ViewController extends BaseController{
 				model.addAttribute("title", message.getResult().get("title"));
 				model.addAttribute("content", message.getResult().get("content"));
 			}
-			return this.validateResult(message, model, Constants.VIEW_VIEW, Constants.VIEW_HOME, null);
+			return this.validateResult(message, model, Constants.VIEW_VIEW, Constants.VIEW_HOME);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return this.exceptionHandler(model);
