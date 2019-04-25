@@ -19,8 +19,10 @@
 
 
 $(() => {
-	// 富文本编辑器变量
-	let textEditor;
+	// 富文本编辑器变量(新建)
+	let textEditorCreate;
+	// 富文本编辑器变量(修改)
+	let textEditorUpdate;
 	
 	/**
 	 * 分页函数
@@ -80,8 +82,8 @@ $(() => {
 	
 	// 钩子函数: 当模态框对用户可见时触发（将等待 CSS 过渡效果完成）:加载编辑器,第一次加载时会设置模态框高度
 	$("#modal-new-note").on("shown.bs.modal", () => {
-		if (!textEditor) {
-			textEditor = editormd("my-editormd", {
+		if (!textEditorCreate) {
+			textEditorCreate = editormd("my-editormd", {
 				placeholder : "记录精彩瞬间~",
 				emoji : true,
 				// width : "90%", // 编辑器控件的宽度
@@ -150,6 +152,7 @@ $(() => {
 				 */
 			});
 		}
+		// 设置编辑器高度
 		$("#my-editormd").height($(window).height() * 0.7);
 	})
 	
@@ -158,12 +161,22 @@ $(() => {
 		
 	})
 	
-	// clear按钮事件:清空输入
+	// 修改笔记的模态框显示后钩子事件
+	$("#modal-update-note").on("shown.bs.modal", () => {
+		
+	})
+	
+	// 新建笔记: clear按钮事件:清空输入
 	$("#btn-clear").on("click", () => {
 		$("#txt-title").val("");
 	})
 	
-	// 保存按钮事件:保存文档
+	// 修改笔记: clear按钮事件:清空输入
+	$("#btn-clear-update").on("click", () => {
+		$("#txt-title-update").val("");
+	})
+	
+	// 新建笔记：保存按钮事件:保存文档
 	$("#btn-save").on("click", () => {
 		
 		if (!$.trim($("#txt-title").val())) {
@@ -212,12 +225,12 @@ $(() => {
 		$.confirm({
 	        title: '确认删除?',
 	        content: '确认删除该笔记?',
-	        type: 'blue',
+	        type: 'red',
 	        icon: 'glyphicon glyphicon-question-sign',
 	        buttons: {
 	            ok: {
 	                text: '确认',
-	                btnClass: 'btn-info',
+	                btnClass: 'btn-danger',
 	                action: () => {
 	                	try {
 	            			let url = $(this).parent().prop("href");
@@ -258,6 +271,88 @@ $(() => {
 	            		} catch (e) {
 	            			toastr.error("javascript异常：" + e);
 	            		}
+	                }
+	            },
+	            cancel: {
+	                text: '取消',
+	                btnClass: 'btn-default'
+	            }
+	        }
+	    });
+		return false;
+	})
+	
+	// 修改笔记：保存按钮事件:保存文档
+	$("#btn-save-update").on("click", () => {
+		
+		if (!$.trim($("#txt-title-update").val())) {
+			toastr.warning("请输入标题");
+			return;
+		}
+		if (!$.trim($("textarea[name='my-editormd-update-html-code']").val())) {
+			toastr.warning("内容不能为空");
+			return;
+		}
+		
+		try {
+			let url = $(this).parent().prop("href");
+			// 找到最后出现的“/”,则后续的就是笔记的id
+			let index = url.lastIndexOf("/");
+			let id = url.substr(index + 1);
+			// 正确的id应该是18位以上的纯数字，并且以2开头
+			if (!isAlphaNum(id)) {
+				// toastr.warn("找不到该笔记"); // 这行代码会报异常，会进入catch
+				toastr.warning("找不到该笔记");
+			} else {
+				$.ajax({ 
+					url: url, 
+					type: "put", 
+					dataType : "json", 
+					cache :false, 
+					data : { 
+						// ajax参数中如果不加引号直接使用 如txt-title的形式，则js解析会报错，带连接符的参数名需要加引号
+						"note-id" : id, 
+						"txt-title-update": $("#txt-title-update").val(),
+						"my-editormd-update-markdown-doc": $("#my-editormd-update-markdown-doc").val(),
+						"my-editormd-update-html-code": $("textarea[name='my-editormd-update-html-code']").val(),
+						_method : "put"
+					},
+					success: (data) => {
+						if (data.error == "0") {
+							toastr.info(data.message);
+							$("#modal-update-note").hide();
+							setTimeout(() => {
+								window.location.href="/notes"; 
+							}, 700);
+						} else {
+							toastr.warning(data.message);
+						}
+					},
+					error: () => { 
+						toastr.error("通信异常"); 
+					}
+				});
+		   }
+		} catch (e) {
+			toastr.error("javascript异常：" + e);
+		}
+	})
+	
+	// 更新笔记操作:打开更新模态框并且加载数据
+	// 注意 如果需要用到当前操作对象，
+	// 匿名函数的$(this)指window,所以有操作对象的时候,需要使用function()而不是es6语法的箭头函数
+	$(".update").on("click", function(){
+		$.confirm({
+	        title: '确认修改?',
+	        content: '确认修改该笔记?',
+	        type: 'blue',
+	        icon: 'glyphicon glyphicon-question-sign',
+	        buttons: {
+	            ok: {
+	                text: '确认',
+	                btnClass: 'btn-info',
+	                action: () => {
+	                	$("#modal-update-note").modal("show");
 	                }
 	            },
 	            cancel: {

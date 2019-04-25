@@ -63,9 +63,8 @@
 				<!-- 笔记列表  deleteNote(this); return false;-->
 				<div class="well-group default-font-size" id="content-list">
 					<a href="#" class="list-group-item default-font-size note-list" th:each="item: ${list}"
-						th:href="@{'/note/' + ${item.id}}"><span th:text="${item.title}"></span> <span
-						class="badge delete"><i class="glyphicon glyphicon-trash"></i></span><span class="badge"
-						onclick="alert(1)"><i class="glyphicon glyphicon-edit"></i></span></a>
+						th:href="@{'/notes/' + ${item.id}}"><span th:text="${item.title}"></span> <span
+						class="badge delete"><i class="glyphicon glyphicon-trash"></i></span><span class="badge update"><i class="glyphicon glyphicon-edit"></i></span></a>
 				</div>
 			</div>
 			<div class="col-md-2"></div>
@@ -126,6 +125,44 @@
 	</div>
 
 	<!-- --------------------------------- -->
+	<!-- 用于修改笔记的模态框 -->
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="modal-update-note" tabindex="-1" role="dialog" aria-hidden="true"
+		data-backdrop="false" data-keyboard="false">
+		<div class="modal-dialog" style="width: 80%">
+			<div class="modal-content">
+				<!-- 模态框标题 -->
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<!-- 输入标题 -->
+					<div class="input-group" style="width: 85%; margin: 0 auto 0px">
+						<span class="input-group-addon" th:text="#{home.modal-title}"></span> <input type="text"
+							maxlength="60" placeholder="输入标题,最多60个字符。。" class="form-control"
+							id="txt-title-update" /> <span class="input-group-btn"><button type="button"
+								class="btn btn-default" th:text="#{home.clear}" id="btn-clear-update"></button></span>
+					</div>
+				</div>
+				<div class="modal-body" id="my-editormd-update">
+					<!-- 富文本編輯器 --> 
+					<textarea id="my-editormd-update-markdown-doc-update" name="my-editormd-update-markdown-doc-update" style="display: none"></textarea>
+				</div>
+				<!-- 模态框底部 -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-warning" id="btn-save-update">
+						<span class="glyphicon glyphicon-ok"></span>
+					</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						<span class="glyphicon glyphicon-off"></span>
+					</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+	
+	
+	
 	<script th:src="@{/js/jquery/jquery.min.js}"></script>
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 	<script th:src="@{/editor.md/editormd.min.js}"></script>

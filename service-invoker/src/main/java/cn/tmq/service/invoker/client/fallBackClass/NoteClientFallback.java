@@ -30,20 +30,29 @@ public class NoteClientFallback implements NoteClient{
 	}
 	
 	@Override
-	public Map<String, Object> view(Map<String, String> paramMap) {
+	public Map<String, Object> view(String id) {
 		// TODO Auto-generated method stub
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("status", ERROR_CODE);
-		resultMap.put("message", "调用服务信息：系统异常，获取笔记失败");
+		resultMap.put("message", "调用服务信息：系统异常，获取id为【" + id + "】的笔记失败");
 		return resultMap;
 	}
 
 	@Override
-	public Map<String, Object> note(String id) {
+	public Map<String, Object> delete(String id) {
 		// TODO Auto-generated method stub
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("status", ERROR_CODE);
 		resultMap.put("message", "调用服务信息：系统异常，删除id为【" + id + "】的笔记失败");
+		return resultMap;
+	}
+
+	@Override
+	public Map<String, Object> update(Map<String, String> paramMap) {
+		// TODO Auto-generated method stub
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("status", ERROR_CODE);
+		resultMap.put("message", "调用服务信息：系统异常，修改id为【" + paramMap.get("id") + "】的笔记失败");
 		return resultMap;
 	}
 }

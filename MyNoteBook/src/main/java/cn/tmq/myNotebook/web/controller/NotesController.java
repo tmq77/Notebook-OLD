@@ -27,7 +27,7 @@ import cn.tmq.myNotebook.web.responseDto.UserNotesResponseDto;
  * @version 1.0
  */
 @Controller
-public class HomeController extends BaseController{
+public class NotesController extends BaseController{
 	
 	private Supplier<Map<String, Object>> supplier = HashMap<String, Object>::new;
 	
@@ -40,7 +40,7 @@ public class HomeController extends BaseController{
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/notes", method=RequestMethod.GET)
-	public String home(Model model, HttpSession session, HttpServletRequest request) {
+	public String notes(Model model, HttpSession session, HttpServletRequest request) {
 		try {
 			Map<String, Object> paramMap = this.supplier.get();
 			String pageIndex = request.getParameter("page");
@@ -87,7 +87,7 @@ public class HomeController extends BaseController{
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/note", method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> blog(HttpServletRequest request, HttpSession session) {
+	public Map<String, Object> note(HttpServletRequest request, HttpSession session) {
 		Map<String, Object> resultMap = this.supplier.get();
 		resultMap.put("error", "1");
 		resultMap.put("message", "系统异常");
@@ -118,9 +118,37 @@ public class HomeController extends BaseController{
 		return resultMap;
 	}
 	
-	@RequestMapping(value = "/note/{id}", method = RequestMethod.DELETE)
+	/**
+	 * 查看笔记
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/notes/{id}")
+	public String view(@PathVariable String id, Model model) {
+		try {
+			Map<String, Object> paramMap = this.supplier.get();
+			paramMap.put("id", id);
+			Message<Map<String, Object>> message = this.postForService("view", paramMap);
+			if ("200".equals(message.getStatus())) {
+				model.addAttribute("title", message.getResult().get("title"));
+				model.addAttribute("content", message.getResult().get("content"));
+			}
+			return this.validateResult(message, model, Constants.VIEW_VIEW, Constants.VIEW_HOME);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.exceptionHandler(model);
+		}
+	}
+	
+	/**
+	 * 删除笔记
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/notes/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public Map<String, Object> note(@PathVariable("id") String id) {
+	public Map<String, Object> delete(@PathVariable("id") String id) {
 		Map<String, Object> resultMap = this.supplier.get();
 		resultMap.put("error", "1");
 		resultMap.put("message", "系统异常");
@@ -134,6 +162,48 @@ public class HomeController extends BaseController{
 				resultMap.put("error", "0");
 			}
 			resultMap.put("message", message.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultMap;
+	}
+	
+	/**
+	 * 修改笔记
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/note", method=RequestMethod.PUT)
+	@ResponseBody
+	public Map<String, Object> update(HttpServletRequest request, HttpSession session) {
+		Map<String, Object> resultMap = this.supplier.get();
+		resultMap.put("error", "1");
+		resultMap.put("message", "系统异常");
+		try {
+			// 必须项目check
+			String title = request.getParameter("txt-title-update");
+			String content = request.getParameter("my-editormd-update-markdown-doc");
+			String contentHtml = request.getParameter("my-editormd-update-html-code");
+			String id = request.getParameter("note-id");
+			if (StringUtils.isAnyEmpty(title,content,contentHtml)) {
+				// 必须check
+				resultMap.put("message", "必须项目不能为空");
+			} else {
+				Map<String, Object>  paramMap = this.supplier.get();
+				paramMap.put("title", title);
+				paramMap.put("content", content);
+				paramMap.put("displayContent", contentHtml);
+				paramMap.put("id", id);
+				paramMap.put("userId", ((Map<String, Object>)session.getAttribute(Constants.SESSION_USER)).get("id"));
+				// 远程调用
+				Message<List<UserNotesResponseDto>> message = this.postForService("update", paramMap);
+				if ("200".equals(message.getStatus())) {
+					resultMap.put("error", "0");
+				}
+				resultMap.put("message", message.getMessage());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

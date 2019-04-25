@@ -9,21 +9,21 @@ import cn.tmq.service.notebook.entity.MNotes;
 import cn.tmq.service.notebook.mapper.MNotesMapper;
 
 @Service
-public class ViewNoteService {
-
+public class UpdateNoteService {
+	
 	@Autowired
 	private MNotesMapper mapper;
 	
 	/**
-	 * 获取笔记
-	 * @param id
+	 *  修改笔记
+	 * @param id 笔记id
 	 * @return
 	 */
-	public MNotes selectNotesById(String id) {
-		if (id == null || !Pattern.matches("^[2-9][0-9]{17,}$", id)) {
+	public int updateNote(MNotes note) {
+		if (note.getId() == null || !Pattern.matches("^[2-9][0-9]{17,}$", note.getId())) {
 			// id合法性验证：纯数字并且大于等于18位并且开头为2(包含)以上
-			return null;
+			return 0;
 		}
-		return this.mapper.selectByPrimaryKey(id);
-	} 
+		return this.mapper.updateByPrimaryKey(note);
+	}
 }

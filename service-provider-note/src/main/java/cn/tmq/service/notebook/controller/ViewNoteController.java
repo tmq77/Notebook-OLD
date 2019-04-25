@@ -4,12 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.tmq.service.notebook.entity.MNotes;
@@ -30,20 +29,17 @@ public class ViewNoteController {
 	
 	/**
 	 * 获取用户笔记(单篇笔记)
+	 * GET请求接收参数时，如果参数为Map类型，则需要加注释@RequestParam 
 	 * @param paramMap
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/note", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Map<String, Object> view(@RequestParam Map<String, String> paramMap) throws Exception {
+	@RequestMapping(value = "/notes/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, Object> view(@PathVariable String id) throws Exception {
 		try {
 			Map<String, Object> resultMap = this.supplier.get();
-			if (StringUtils.isEmpty(paramMap.get("id"))) {
-				resultMap.put("status", "700");
-				resultMap.put("message", "必须项目(笔记id)不能为空");
-				return resultMap;
-			}
-			MNotes note = this.service.selectNotesById(paramMap.get("id"));
+			
+			MNotes note = this.service.selectNotesById(id);
 			if (null == note) {
 				// 笔记不存在或者已经删除
 				resultMap.put("status", "704");

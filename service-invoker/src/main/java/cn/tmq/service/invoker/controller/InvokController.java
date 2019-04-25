@@ -76,11 +76,15 @@ public class InvokController {
 			} else if ("view".equals(serviceId)) {
 				// 查看笔记
 				System.out.println("调用查看笔记服务;参数【" + paramMap + "】");
-				return this.noteClient.view(paramMap);
+				return this.noteClient.view(paramMap.get("id"));
 			} else if ("delete".equals(serviceId)) {
-				// 删除笔记(同方法名但是参数不同，java中的重载)
+				// 删除笔记
 				System.out.println("调用删除笔记服务;参数【" + paramMap + "】");
-				return this.noteClient.note(paramMap.get("id"));
+				return this.noteClient.delete(paramMap.get("id"));
+			} else if ("update".equals(serviceId)) {
+				// 修改笔记
+				System.out.println("调用修改笔记服务;参数【" + paramMap + "】");
+				return this.noteClient.update(paramMap);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
