@@ -14,6 +14,19 @@ document.onkeydown = function() {
 	}
 };*/
 
+// 谷歌浏览器中禁用滚轮放大，需要加入参数
+window.addEventListener('mousewheel', function(event){
+    if (event.ctrlKey === true || event.metaKey) {
+          event.preventDefault();
+    }
+},{ passive: false});
+// 禁用放大快捷键
+window.addEventListener('keydown', function(event){
+    if ((event.ctrlKey === true || event.metaKey) && (event.keyCode == 107 || event.keyCode == 109 || event.keyCode == 187 || event.keyCode == 189)) {
+          event.preventDefault();
+    }
+});
+
 /**
  * 消息框配置js
  */
