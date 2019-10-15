@@ -21,6 +21,7 @@ server:
   port: 9999                        #服务管理中心端口
 eureka:
   client:
+    #是否将自己注册到Eureka Server上，默认为true
     #register-with-eureka: false     #(单节点时设置false)防止将自己当作客户端去注册从而引发Cannot execute request on any known server 问题
     #fetch-registry: false           #同上
     service-url:
