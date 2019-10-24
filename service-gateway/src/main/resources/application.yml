@@ -11,6 +11,8 @@
 #    service-url:
 #      defaultZone: http://server-8888:8888/eureka/,http://server-9999:9999/eureka/
 #zuul:
+#  ignored-services:"*"  #所有的 Eureka 中的服务名称的信息访问都要忽略掉，所有的访问都需要配置一个映射路径的模式来完成->无法通过微服务id进行直接访问
+#                        #只能通过zuul配置的映射路径进行访问
 #  ribbon:
 #    eager-load:
 #      enabled: true
