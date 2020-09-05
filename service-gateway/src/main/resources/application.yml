@@ -28,6 +28,9 @@
                                   #例如访问localhost:8500/myNotebook   => localhost:9000/
                                   #localhost:8500/myNotebook/invoke/{1} => http://service-invoker/invoke/{1}
                                   #localhost:8500/myNotebook/ 将会返回404,因为service-invoker中没有【/】对应的方法处理，只有invoke/{1}
+#    userImgs:
+#      path: /userImgs/*
+#      service-id: service-provider-note
 #  host:
 #    connect-timeout-millis: 8000
 #    connection-request-timeout-millis: 1000

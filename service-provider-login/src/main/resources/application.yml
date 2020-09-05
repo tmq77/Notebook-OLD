@@ -1,5 +1,5 @@
 server:
-  port: 9001
+  port: 9100
 spring:
 #  application:
 #    name: service-provider-login  #服务名称 
@@ -8,7 +8,7 @@ spring:
 #    username: myblog
 #    password: LYH66666
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-  profiles: service-provider-login-9001   #可以不设置多个profile,直接在eclipse中配置多启动即可，但是考虑到实际部署,还是需要这个属性的
+  profiles: service-provider-login-9100   #可以不设置多个profile,直接在eclipse中配置多启动即可，但是考虑到实际部署,还是需要这个属性的
 #eureka:
 #  instance:
 #    hostname: localhost
@@ -20,7 +20,7 @@ spring:
 #  mapper-locations: classpath*:cn/tmq/service/login/mapper/**/*.xml
 ---
 server:
-  port: 9002
+  port: 9200
 spring:
 #  application:
 #    name: service-provider-login  #服务名称 
@@ -29,7 +29,7 @@ spring:
 #    username: myblog
 #    password: LYH66666
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-  profiles: service-provider-login-9002
+  profiles: service-provider-login-9200
 #eureka:
 #  instance:
 #    hostname: localhost

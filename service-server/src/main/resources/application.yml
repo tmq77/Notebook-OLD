@@ -10,8 +10,8 @@ eureka:
     #fetch-registry: false           #同上
     service-url:
       defaultZone: http://server-9999:9999/eureka/  #默认使用8761，需要手动覆盖成自己的，注意加端口
-  instance:
-    hostname: server-8888
+  instance: 
+    hostname: server-8888  #这是使用自定义的hostname需要在windows系统或者linux系统的hosts文件添加自定义hostname
 ---
 spring:
   application:

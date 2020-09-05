@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import cn.tmq.service.invoker.client.NoteClient;
 import cn.tmq.service.invoker.client.LoginClient;
@@ -53,7 +55,7 @@ public class InvokController {
 	 */
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/invoke/{serviceId}", method = RequestMethod.POST)
-	public Map<String, Object> registRouter(@PathVariable String serviceId, @RequestBody Map<String, String> paramMap) throws Exception {
+	public Map<String, Object> serviceRouter(@PathVariable String serviceId, @RequestBody Map<String, String> paramMap) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		try {
 			if ("regist".equals(serviceId)) {
@@ -76,21 +78,44 @@ public class InvokController {
 			} else if ("view".equals(serviceId)) {
 				// 查看笔记
 				System.out.println("调用查看笔记服务;参数【" + paramMap + "】");
-				return this.noteClient.view(paramMap.get("id"));
+				resultMap =  this.noteClient.view(paramMap.get("id"));
 			} else if ("delete".equals(serviceId)) {
 				// 删除笔记
 				System.out.println("调用删除笔记服务;参数【" + paramMap + "】");
-				return this.noteClient.delete(paramMap.get("id"));
+				resultMap =  this.noteClient.delete(paramMap.get("id"));
 			} else if ("update".equals(serviceId)) {
 				// 修改笔记
 				System.out.println("调用修改笔记服务;参数【" + paramMap + "】");
-				return this.noteClient.update(paramMap);
+				resultMap =  this.noteClient.update(paramMap);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			// 新异常会由网关捕获并触发回退
 			// 如果不抛出异常或者被提前捕获，那么网关不会触发回退
 			throw new Exception("调用信息:服务调用者异常");
+		}
+		return resultMap;
+	}
+	
+	
+	/**
+	 * 文件上传
+	 * @param imgFile 上传的文件，restTemplate调用者发起调用时的key值需要和这里接收的文件名一致，否则会接不到。但是直接请求的话则不需要变量名一致，只要注解指定一致即可
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/invoke/imgUpload", method = RequestMethod.POST)
+	public Map<String, Object> imageFileUploadRouter(@RequestPart("imgFile") MultipartFile imgFile) throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		try {
+			// 修改笔记
+			System.out.println("调用上传图片服务");
+			resultMap =  this.noteClient.upload(imgFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// 新异常会由网关捕获并触发回退
+			// 如果不抛出异常或者被提前捕获，那么网关不会触发回退
+			throw new Exception("调用信息:服务调用者(图片上传)异常");
 		}
 		return resultMap;
 	}

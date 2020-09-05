@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import cn.tmq.service.invoker.client.NoteClient;
 
@@ -53,6 +54,15 @@ public class NoteClientFallback implements NoteClient{
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("status", ERROR_CODE);
 		resultMap.put("message", "调用服务信息：系统异常，修改id为【" + paramMap.get("id") + "】的笔记失败");
+		return resultMap;
+	}
+
+	@Override
+	public Map<String, Object> upload(MultipartFile file) {
+		// TODO Auto-generated method stub
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("status", ERROR_CODE);
+		resultMap.put("message", "调用服务信息：系统异常，图片上传失败");
 		return resultMap;
 	}
 }
